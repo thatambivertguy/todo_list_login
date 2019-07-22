@@ -75,19 +75,20 @@ app.get('/todos',checkLoggedIn,(req,res)=>{
 })
 
 app.post('/todos',checkLoggedIn,(req,res)=>{
-  if(req.body.task){
+   if(req.body.task){
   const newtask ={
+    username :req.user.username,
     task : req.body.task,
   }
   Tasks.create(newtask).then(task=>{
-    Tasks.findAll().then(alltasks=>{
+    Tasks.findAll({where : {username:req.user.username}}).then(alltasks=>{
       res.json(alltasks)
     })
   }).catch((err)=>{
     console.log(err)
   })}
   else{
-    Tasks.findAll().then(alltask=>{
+    Tasks.findAll({where : {username:req.user.username}}).then(alltask=>{
       res.json(alltask)
     })
   }
@@ -98,18 +99,27 @@ app.post('/todo-del',(req,res)=>{
   completed.destroy({where : {task : req.body.task}}).then(t=>console.log(t))
   res.send("hyo")
 })
+
 app.post('/todo-com',(req,res)=>{
+  if(req.body.task){
   Tasks.destroy({where : {task : req.body.task}}).then(t=>console.log(t))
   const comtask ={
+    username :req.user.username,
     task : req.body.task,
   }
   completed.create(comtask).then(cotask=>{
-    completed.findAll().then(altasks=>{
+    completed.findAll({where : {username:req.user.username}}).then(altasks=>{
       res.json(altasks)
     })
   }).catch((err)=>{
     console.log(err)
-  })
+  })}
+  else{
+    completed.findAll({where : {username:req.user.username}}).then(alltask=>{
+      res.json(alltask)
+    })
+  }
+
 })
 function checkLoggedIn(req, res, next) {
     if (req.user) {

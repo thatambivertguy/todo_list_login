@@ -26,11 +26,11 @@ const Users = db.define('user',{
       },
     })
     const Tasks = db.define('task',{
-      // username: {
-      //     type: Sequelize.STRING,
-      //     // unique: false,
-      //     allowNull: true,
-      //   },
+      username: {
+          type: Sequelize.STRING,
+          // unique: false,
+          // allowNull: true,
+        },
         task : {
           type: Sequelize.STRING,
           allowNull: false,
@@ -38,11 +38,11 @@ const Users = db.define('user',{
         }
        })
        const completed = db.define('completed',{
-        // username: {
-        //     type: Sequelize.STRING,
-        //     // unique: false,
-        //     allowNull: true,
-        //   },
+        username: {
+            type: Sequelize.STRING,
+            // unique: false,
+            // allowNull: true,
+          },
           task : {
             type: Sequelize.STRING,
             allowNull: false,

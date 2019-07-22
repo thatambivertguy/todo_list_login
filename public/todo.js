@@ -1,12 +1,5 @@
 $(()=>{
-    // $.post('/todos',{
-    //     task : $(".txtb").val()
-    // },
-    // (data)=>{
-    //     console.log(data)
-    //     refresh(data)
-    // }
-    // )
+    
     $(".txtb").on("keyup",function(e){
         //13  means enter button
         if(e.keyCode == 13 && $(".txtb").val() != "")
@@ -50,17 +43,11 @@ $(()=>{
                     task : cotask
                 },
                 (data)=>{
-                    console.log(data)
+                    refreshComplete(data)
                 }
                 )
-              
-              
-              p.fadeOut(function(){
-                $(".comp").append(p);
-                p.fadeIn();
-              });
-              $(this).remove();
-            });
+                p.fadeOut()
+                });
     
             task.append(del,check);
             $(".notcomp2").append(task);
@@ -69,6 +56,29 @@ $(()=>{
           })
         
             }
+      function refreshComplete(todo){
+        todo.forEach(t=>{
+          var task = $("<div class='task'></div>").text(t.task);
+          var del = $("<i class='fas fa-trash-alt'></i>").click(function(){
+                
+                
+            var p = $(this).parent();
+            var tas1k = p[0].innerText
+              $.post('/todo-del',{
+                  task : tas1k
+              },
+              (data)=>{
+                  console.log(data)
+              }
+              )
+              p.fadeOut(function(){
+              p.remove();
+            });
+          });
+          task.append(del);
+          $(".comp").append(task);
+        })
+      }
      $.post('/todos',{
         task : $(".txtb").val()
     },
@@ -77,4 +87,9 @@ $(()=>{
         refresh(data)
     }
     )
+    $.post('/todo-com',{},
+  (data)=>{
+      refreshComplete(data)
+  }
+  )
 })

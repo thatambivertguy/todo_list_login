@@ -25,7 +25,33 @@ const Users = db.define('user',{
         type: Sequelize.STRING,
       },
     })
+    const Tasks = db.define('task',{
+      // username: {
+      //     type: Sequelize.STRING,
+      //     // unique: false,
+      //     allowNull: true,
+      //   },
+        task : {
+          type: Sequelize.STRING,
+          allowNull: false,
+          // unique : false,
+        }
+       })
+       const completed = db.define('completed',{
+        // username: {
+        //     type: Sequelize.STRING,
+        //     // unique: false,
+        //     allowNull: true,
+        //   },
+          task : {
+            type: Sequelize.STRING,
+            allowNull: false,
+            // unique : false,
+          }
+         })
     module.exports = {
         db,
         Users,
+        Tasks,
+        completed
       }

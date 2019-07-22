@@ -15,6 +15,7 @@ body{
   max-width: 800px;
   margin: auto;
   padding: 10px;
+  margin-top: 40px;
 }
 
 .txtb{
@@ -29,15 +30,16 @@ body{
 
 h3{
   margin: 10px 0;
+  color: #4775d1;
 }
 
 .task{
   width: 100%;
-  background: rgba(255,255,255,0.5);
+  background: rgba(69, 104, 156, 0.5);
   padding: 18px;
   margin: 6px 0;
   overflow: hidden;
-  
+  color: black
 }
 
 .task i{

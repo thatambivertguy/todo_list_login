@@ -1,6 +1,6 @@
 const express=require('express')
 const session=require('express-session')
-const {db,Users}=require('./db')
+const {db,Users,Tasks,completed}=require('./db')
 const passport=require('./passport-set')
 const app=express()
 
@@ -28,13 +28,13 @@ app.use(passport.session())
 
 app.get('/login/fb', passport.authenticate('facebook'))
 app.get('/login/fb/callback', passport.authenticate('facebook', {
-  successRedirect: '/',
+  successRedirect: '/todos',
   failureRedirect: '/login'
 }))
 
 app.get('/login/git', passport.authenticate('github'))
 app.get('/login/git/callback', passport.authenticate('github', {
-  successRedirect: '/',
+  successRedirect: '/todos',
   failureRedirect: '/login'
 }))
 
@@ -43,7 +43,7 @@ app.get('/login',(req,res)=>{
 })
 
 app.post('/login',passport.authenticate('local',{
-  successRedirect : '/',
+  successRedirect : '/todos',
   failureRedirect :'/login'
 }))
 
@@ -70,10 +70,47 @@ app.post('/signup', (req, res) => {
 app.get('/',checkLoggedIn,(req,res)=>{
     res.send('Welcome Home')
 })
-app.get('/todos',(req,res)=>{
+app.get('/todos',checkLoggedIn,(req,res)=>{
   res.render('todo')
 })
 
+app.post('/todos',checkLoggedIn,(req,res)=>{
+  if(req.body.task){
+  const newtask ={
+    task : req.body.task,
+  }
+  Tasks.create(newtask).then(task=>{
+    Tasks.findAll().then(alltasks=>{
+      res.json(alltasks)
+    })
+  }).catch((err)=>{
+    console.log(err)
+  })}
+  else{
+    Tasks.findAll().then(alltask=>{
+      res.json(alltask)
+    })
+  }
+})
+
+app.post('/todo-del',(req,res)=>{
+  Tasks.destroy({where : {task : req.body.task}}).then(t=>console.log(t))
+  completed.destroy({where : {task : req.body.task}}).then(t=>console.log(t))
+  res.send("hyo")
+})
+app.post('/todo-com',(req,res)=>{
+  Tasks.destroy({where : {task : req.body.task}}).then(t=>console.log(t))
+  const comtask ={
+    task : req.body.task,
+  }
+  completed.create(comtask).then(cotask=>{
+    completed.findAll().then(altasks=>{
+      res.json(altasks)
+    })
+  }).catch((err)=>{
+    console.log(err)
+  })
+})
 function checkLoggedIn(req, res, next) {
     if (req.user) {
       return next()

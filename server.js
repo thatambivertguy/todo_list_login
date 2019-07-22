@@ -70,6 +70,9 @@ app.post('/signup', (req, res) => {
 app.get('/',checkLoggedIn,(req,res)=>{
     res.send('Welcome Home')
 })
+app.get('/todos',(req,res)=>{
+  res.render('todo')
+})
 
 function checkLoggedIn(req, res, next) {
     if (req.user) {

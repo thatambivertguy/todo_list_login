@@ -13,7 +13,7 @@ app.use('/',express.static(__dirname+'/public'))
 
 app.use(
     session({
-      secret: 'fbdsjfhj fdsfhskud ksdfhsuoi',
+      secret: 'secret_key',
       resave: false,
       saveUninitialized: true,
       cookie: {
@@ -34,6 +34,15 @@ app.get('/login/fb/callback', passport.authenticate('facebook', {
 
 app.get('/login/git', passport.authenticate('github'))
 app.get('/login/git/callback', passport.authenticate('github', {
+  successRedirect: '/todos',
+  failureRedirect: '/login'
+}))
+
+app.get('/login/google', passport.authenticate('google',{ scope:
+  [ 'email', 'profile' ] }
+  ))
+
+app.get('/login/google/callback', passport.authenticate('google', {
   successRedirect: '/todos',
   failureRedirect: '/login'
 }))

@@ -24,6 +24,9 @@ const Users = db.define('user',{
       ghAccessToken: {
         type: Sequelize.STRING,
       },
+      gAccessToken: {
+        type: Sequelize.STRING,
+      },
     })
     const Tasks = db.define('task',{
       username: {

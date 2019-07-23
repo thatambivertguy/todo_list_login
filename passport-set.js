@@ -12,13 +12,27 @@ passport.use(
         callbackURL: 'http://localhost:4000/login/fb/callback',
       },
       (accessToken, refreshToken, profile, done) => {
-        Users.create({
+        // Users.create({
+        //     username : profile.id,
+        //     fbAccessToken: accessToken,
+          
+        // })
+        //   .then((user) => {
+        //     console.log(user)
+        //     done(null, user)
+        //   })
+        //   .catch(done)
+
+        Users.findOrCreate({where : {username : profile.id},
+          defaults :
+          {
             username : profile.id,
             fbAccessToken: accessToken,
           
+        }
         })
-          .then((user) => {
-            done(null, user)
+          .then((user,created) => {
+            done(null, user[0])
           })
           .catch(done)
       },
@@ -33,13 +47,23 @@ passport.use(
         callbackURL: 'http://localhost:4000/login/git/callback',
       },
       (accessToken, refreshToken, profile, done) => {
-        console.log(profile)
-        Users.create({
-          username: profile.id,
-          ghAccessToken: accessToken,
+         // Users.create({
+        //   username: profile.id,
+        //   ghAccessToken: accessToken,
+        // })
+        //   .then((user) => {
+        //     done(null, user)
+        //   })
+        //   .catch(done)
+        Users.findOrCreate({where : {username : profile.id},
+          defaults :
+          {
+            username : profile.id,
+            ghAccessToken: accessToken,
+          }
         })
-          .then((user) => {
-            done(null, user)
+          .then((user,created) => {
+            done(null, user[0])
           })
           .catch(done)
       },
